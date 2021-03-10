@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FizzUp_MAHE</string>
+    <string name="exercises_list">Liste des exercises</string>
+    <string name="data_from_cloud">Données en provenance du cloud</string>
+    <string name="data_from_cache">Données récupérées sur cache</string>
+
+</resources>
