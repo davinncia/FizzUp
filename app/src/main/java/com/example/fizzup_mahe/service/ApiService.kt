@@ -6,6 +6,6 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("fizzup/files/public/sample.json")
-    fun getAll(): Call<ApiData>
+    suspend fun getAll(): ApiData
 
 }

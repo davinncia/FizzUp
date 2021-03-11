@@ -38,9 +38,11 @@ class ExerciseRepository private constructor(context: Context) {
         var response: List<Exercise>? = null
 
         try {
-            response = service.getAll().execute().body()?.data
-        } catch (e: IOException) {
-            Log.d("debuglog", e.toString())
+            response = service.getAll().data
+        } catch (cause: Throwable) {
+            // If anything throws an exception, inform the caller
+            //throw Error("Unable to fetch exercises", cause)
+            Log.d("debuglog", "Unable to fetch exercises from server", cause)
         }
 
         if (!response.isNullOrEmpty()) {
