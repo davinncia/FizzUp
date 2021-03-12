@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory.getInstance(applicationContext)
         )[MainViewModel::class.java]
 
-        viewModel.isNetworkAvailable.observe(this, { connected ->
-            val imageResource = if (connected) {
+        viewModel.dataFromServer.observe(this, { fromServer ->
+            val imageResource = if (fromServer) {
                 dataSourceMessage = getString(R.string.data_from_cloud)
                 R.drawable.ic_cloud
             } else {
