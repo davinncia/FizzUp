@@ -20,15 +20,11 @@ class ExerciseRepository private constructor(context: Context) {
         Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
     private val service = retrofit.create(ApiService::class.java)
 
-    private val dao: ExerciseDao
+    private val db = AppDatabase.getDatabase(context.applicationContext)
+    private val dao = db.exerciseDao()
 
-    val exercises: LiveData<List<Exercise>>
+    val exercises: LiveData<List<Exercise>> = dao.getAll()
 
-    init {
-        val db = AppDatabase.getDatabase(context)
-        dao = db.exerciseDao()
-        exercises = dao.getAll()
-    }
 
     suspend fun fetchExercises() {
 
@@ -60,7 +56,7 @@ class ExerciseRepository private constructor(context: Context) {
 }
 
 /**
- * Thrown when there was a error fetching exercises from server
+ * Thrown when there was a error fetching exercises from server.
  *
  * @property message user ready error message
  * @property cause the original cause of this exception

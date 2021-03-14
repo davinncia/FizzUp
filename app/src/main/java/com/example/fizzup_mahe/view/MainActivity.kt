@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.exercises.observe(this, {
             progressBar.visibility = View.GONE
-            adapter.updateData(it)
+            it?.let { adapter.submitList(it) }
         })
     }
 

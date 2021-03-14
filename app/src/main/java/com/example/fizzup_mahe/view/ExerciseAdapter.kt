@@ -6,14 +6,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fizzup_mahe.R
 import com.example.fizzup_mahe.model.Exercise
 
-class ExerciseAdapter: RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
+class ExerciseDiffCallBack : DiffUtil.ItemCallback<Exercise>() {
+    override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-    private var exercises = listOf<Exercise>()
+    override fun areContentsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class ExerciseAdapter: ListAdapter<Exercise, ExerciseAdapter.ExerciseViewHolder>(ExerciseDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
@@ -22,16 +32,8 @@ class ExerciseAdapter: RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
-        holder.bind(exercises[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount() = exercises.size
-
-    fun updateData(list: List<Exercise>) {
-        exercises = list
-        notifyDataSetChanged()
-    }
-
 
     inner class ExerciseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -40,7 +42,7 @@ class ExerciseAdapter: RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>(
 
         init {
             itemView.findViewById<ImageView>(R.id.iv_arrow_right_exercise_item).setOnClickListener {
-                Toast.makeText(itemView.context, exercises[adapterPosition].name, Toast.LENGTH_SHORT).show()
+                Toast.makeText(itemView.context, getItem(adapterPosition).name, Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -13,23 +13,21 @@ class MainViewModel(
 ) : ViewModel() {
 
     //TODO diff utils adapter
-    private val _dataFromServer = MutableLiveData<Boolean>()
-    val dataFromServer: LiveData<Boolean> = _dataFromServer
+    val exercises = exerciseRepo.exercises
 
-    private val _exercise = Transformations.switchMap(networkRepo.isConnected) { connected ->
+    val dataFromServer: LiveData<Boolean> = Transformations.map(networkRepo.isConnected) { isConnected ->
         // Removing the callback once data has been acquired from server
-        if (connected) networkRepo.removeCallback()
+        if (isConnected) networkRepo.removeCallback()
 
         viewModelScope.launch {
             try {
                 exerciseRepo.fetchExercises()
-                _dataFromServer.value = true
             } catch (error: ServerRequestError) {
-                _dataFromServer.value = false
+                // TODO UI
             }
         }
 
-        exerciseRepo.exercises
+        isConnected
     }
-    val exercises: LiveData<List<Exercise>> = _exercise
+
 }
