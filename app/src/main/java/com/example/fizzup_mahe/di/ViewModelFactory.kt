@@ -12,7 +12,7 @@ import java.lang.IllegalArgumentException
  * Factory to create view models using manual dependency injection.
  */
 class ViewModelFactory
-private constructor(appContext: Context) : ViewModelProvider.Factory {
+private constructor(private val appContext: Context) : ViewModelProvider.Factory {
 
     private val networkRepo = NetworkRepository.getInstance(appContext)
     private val exerciseRepo = ExerciseRepository.getInstance(appContext)
@@ -21,6 +21,7 @@ private constructor(appContext: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> MainViewModel(
+                appContext,
                 networkRepo,
                 exerciseRepo
             ) as T

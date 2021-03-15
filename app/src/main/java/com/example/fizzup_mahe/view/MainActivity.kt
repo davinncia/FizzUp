@@ -46,22 +46,18 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory.getInstance(applicationContext)
         )[MainViewModel::class.java]
 
-        viewModel.dataFromServer.observe(this, { fromServer ->
-            val imageResource = if (fromServer) {
-                dataSourceMessage = getString(R.string.data_from_cloud)
-                R.drawable.ic_cloud
-            } else {
-                dataSourceMessage = getString(R.string.data_from_cache)
-                R.drawable.ic_folder
-            }
-
-            networkImageView.setImageResource(imageResource)
-        })
-
         viewModel.exercises.observe(this, {
             progressBar.visibility = View.GONE
             it?.let { adapter.submitList(it) }
         })
+
+        viewModel.dataSourceInfo.observe(this) {
+            dataSourceMessage = it
+        }
+
+        viewModel.dataImageRes.observe(this) {
+            networkImageView.setImageResource(it)
+        }
     }
 
     private fun initRecyclerView(adapter: ExerciseAdapter) {

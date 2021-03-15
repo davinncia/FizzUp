@@ -3,5 +3,6 @@
     <string name="exercises_list">Liste des exercises</string>
     <string name="data_from_cloud">Données en provenance du cloud</string>
     <string name="data_from_cache">Données récupérées sur cache</string>
+    <string name="errror_server">Une erreur est survenue lors de la communication avec le serveur...</string>
 
 </resources>
